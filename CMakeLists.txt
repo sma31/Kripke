@@ -53,7 +53,7 @@ if(ENABLE_CUDA)
   # Make sure we use nvcc with our selected host compiler to link executables
   set(CMAKE_CUDA_LINK_EXECUTABLE "${CMAKE_CUDA_COMPILER} -ccbin "g++" <CMAKE_CUDA_LINK_FLAGS>  <FLAGS>  <LINK_FLAGS>  <OBJECTS> -o <TARGET>  <LINK_LIBRARIES>")
   # Use nvcc as the linker
-  set(CMAKE_LINKER "${CMAKE_CUDA_COMPILER}" CACHE STRING "")
+  #set(CMAKE_LINKER "${CMAKE_CUDA_COMPILER}" CACHE STRING "")
 
   # Pass nvcc the -cubin to point at our C++ compiler
   #set(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
