@@ -1,0 +1,1 @@
+/usr/local/cuda/bin/nvcc  --expt-extended-lambda -O3 -DNDEBUG  -Xcompiler=-fPIC -Wno-deprecated-gpu-targets -shared -dlink CMakeFiles/kripke.exe.dir/src/kripke.cpp.o -o CMakeFiles/kripke.exe.dir/cmake_device_link.o lib/libRAJA.a lib/libkripke.a lib/libRAJA.a 
