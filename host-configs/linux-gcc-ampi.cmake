@@ -5,13 +5,14 @@
 ##
 ## All rights reserved.
 ##
-##
+##run "cmake .. -C../host-configs/linux-gcc-ampi.cmake -DENABLE_OPENMPI=OFF -DENABLE_CUDA=ON -DCUDA_CUDART_LIBRARY=/usr/local/cuda/lib64/libcudart.so" to build
 
 set(RAJA_COMPILER "RAJA_COMPILER_CLANG" CACHE STRING "")
 set(CMAKE_C_COMPILER_WORKS TRUE CACHE INTERNAL "")
 set(CMAKE_CXX_COMPILER_WORKS TRUE CACHE INTERNAL "")
 set(CMAKE_CUDA_COMPILER_WORKS TRUE CACHE INTERNAL "")
 
+set(CUDA_CUDART_LIBRARY "/usr/local/cuda/lib64" CACHE INTERNAL "")
 
 set(CMAKE_C_COMPILER   "ampicc" CACHE PATH "")
 set(CMAKE_CXX_COMPILER "ampicxx" CACHE PATH "")

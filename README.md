@@ -25,7 +25,7 @@ A major challenge of achieving high-performance in an Sn transport (or any physi
 
 Parallel sweep algorithms can be explored with Kripke in multiple ways. The core MPI algorithm could be modified or rewritten to explore other approaches, domain overloading, or alternate programming models (such as Charm++). The effect of load-imbalance is an understudied aspect of Sn transport sweeps, and could easily be studied with Kripke by artificially adding more work (ie unknowns) to a subset of MPI tasks. Block-AMR could be added to Kripke, which would be a useful way to explore the cost-benefit analysis of adding AMR to an Sn code, and would be a way to further study load imbalances and AMR effects on sweeps.
 
-The coupling of on-node sweep kernel, the parallel sweep algorithm, and the choices of decomposing the problem phase space into GS's, ZS's and DS's impact the performance of the overall sweep. The trade off between large and small "units of work" can be studied. Larger "units of work" provide more opportunity for on-node parallelism, while creating larger messages, less "sends", and less efficient parallel sweeps. Smaller "units of work" make for less efficient on-node kernels, but more efficient parallel sweeps. 
+The coupling of on-node sweep kernel, the parallel sweep algorithm, and the choices of decomposing the problem phase space into GS's, ZS's and DS's impact the performance of the overall sweep. The trade off between large and small "units of work" can be studied. Larger "units of work" provide more opportunity for on-node parallelism, while creating larger messages, less "sends", and less efficient parallel sweeps. Smaller "units of work" make for less efficient on-node kernels, but more efficient parallel sweeps.
 
 We can also study trading MPI tasks for threads, and the effects this has on our programming models and cache efficiency.
 
@@ -35,7 +35,7 @@ A simple timer infrastructure is provided that measure each compute kernels tota
 Physical Models
 ---------------
 
-Kripke solves the Discrete Ordinance and Diamond Difference discretized steady-state linear Boltzmann equation. 
+Kripke solves the Discrete Ordinance and Diamond Difference discretized steady-state linear Boltzmann equation.
 
         H * Psi = (LPlus * S * L) * Psi + Q
 
@@ -87,7 +87,7 @@ Basic requirements:
 
 *  (Optional) [Caliper](https://github.com/LLNL/Caliper): a performance profiling/analysis library.
 
-
+*  (Optional) Charm++ (https://github.com/UIUC-PPL/charm) with AMPI+CUDA build.
 Submodule dependencies:
 
 *  [BLT](https://github.com/LLNL/blt) v0.1: a CMake based build system (required)
@@ -111,10 +111,10 @@ Two options are available:
 The following are the instruction for cloning the tarball, and setting up your clone repository.
 
 Clone the latest released version from github:
-        
+
         git clone https://github.com/LLNL/Kripke.git
-        
-Clone all of the submodules.  The Kripke build system, BLT, resides in 
+
+Clone all of the submodules.  The Kripke build system, BLT, resides in
 another repository on github so one must initialize and update the "git submodules"
 
         cd Kripke
@@ -122,18 +122,18 @@ another repository on github so one must initialize and update the "git submodul
 
 The released source tarball on github is created with all of the submodules included already.
 
- 
+
 
 Quick Start
 -----------
 The easiest way to get Kripke running, is to directly invoke CMake and take whatever system defaults you have for compilers and let CMake find MPI for you.
 
 *  Step 1:  Create a build space (assuming you are starting in the Kripke root directory)
-        
+
         mkdir build
 
 *  Step 2: Run CMake in that build space
-        
+
         cd build
         cmake ..
 
@@ -142,14 +142,18 @@ The easiest way to get Kripke running, is to directly invoke CMake and take what
         cd build
         cmake .. -C../host-configs/llnl-bgqos-clang.cmake
 
+        To use AMPI+CUDA, run:
+
+        cmake .. -C../host-configs/linux-gcc-ampi.cmake -DENABLE_OPENMPI=OFF -DENABLE_CUDA=ON -DCUDA_CUDART_LIBRARY=/usr/local/cuda/lib64/libcudart.so
+
 *  Step 3: Now make Kripke:
-         
+
         make -j8
-  
+
 *  Step 5: Run Kripke's default problem:
-   
+
         ./bin/kripke.exe
-  
+
 
 There are a number of cache init files for LLNL machines and operating systems.  
 These might not meet your needs, but can be a very good starting point for developing your own.
@@ -168,6 +172,10 @@ The current list of cache init files (located in the ./host-configs/ directory) 
 *  llnl-blueos-P100-nvcc-clang.cmake
 
 *  llnl-blueos-V100-nvcc-clang.cmake
+
+For AMPI+CUDA build:
+
+*  linux-gcc-ampi.cmake
 
 
 
@@ -211,11 +219,11 @@ Command line option help can also be viewed by running "./kripke --help"
 ### Physics Parameters:
 
 *   **``--sigt <sigt0,sigt1,sigt2>``**
- 
+
     Total material cross-sections.  (Default:   --sigt 0.1,0.0001,0.1)
 
 *   **``--sigs <sigs0,sigs1,sigs2>``**
- 
+
     Total material cross-sections.  (Default:   --sigs 0.05,0.00005,0.05)
 
 
@@ -223,7 +231,7 @@ Command line option help can also be viewed by running "./kripke --help"
 
 *   **``--arch <ARCH>``**
 
-    Architecture selection.  Selects the back-end used for computation, available are Sequential, OpenMP and CUDA. The default depends on capabilities selected by the build system and is selected from list of increasing precedence: Sequential, OpenMP and CUDA. 
+    Architecture selection.  Selects the back-end used for computation, available are Sequential, OpenMP and CUDA. The default depends on capabilities selected by the build system and is selected from list of increasing precedence: Sequential, OpenMP and CUDA.
 
 *   **``--layout <LAYOUT>``**
 
@@ -233,11 +241,11 @@ Command line option help can also be viewed by running "./kripke --help"
 ### Parallel Decomposition Options:
 
 *   **``--pdist <lout>``**
-    
+
     Layout of spatial subdomains over mpi ranks. 0 for "Blocked" where local zone sets represent adjacent regions of space. 1 for "Scattered" where adjacent regions of space are distributed to adjacent MPI ranks. (Default: --layout 0)
 
 *   **``--procs <npx,npy,npz>``**
-    
+
     Number of MPI ranks in each spatial dimension. (Default:  --procs 1,1,1)
 
 *   **``--dset <ds>``**
@@ -245,11 +253,11 @@ Command line option help can also be viewed by running "./kripke --help"
     Number of direction-sets.  Must be a factor of 8, and divide evenly the number of quadrature points. (Default:  --dset 8)
 
 *   **``--gset <gs>``**
-    
+
     Number of energy group-sets.  Must divide evenly the number energy groups. (Default:  --gset 1)
 
 *   **``--zset <zx>,<zy>,<zz>``**
-    
+
     Number of zone-sets in x, y, and z.  (Default:  --zset 1:1:1)
 
 
