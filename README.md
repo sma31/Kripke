@@ -144,7 +144,7 @@ The easiest way to get Kripke running, is to directly invoke CMake and take what
         cd build
         cmake .. -C../host-configs/llnl-bgqos-clang.cmake
 
-        To use AMPI+CUDA, run:
+        To use AMPI+CUDA, modify the path to CUDA and AMPI directories on your working machine in /host-configs/linux-gcc-ampi.cmake, then run:
 
         cmake .. -C../host-configs/linux-gcc-ampi.cmake -DENABLE_OPENMPI=OFF -DENABLE_CUDA=ON -DCUDA_CUDART_LIBRARY=/usr/local/cuda/lib64/libcudart.so
 
