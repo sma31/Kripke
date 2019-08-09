@@ -87,7 +87,9 @@ Basic requirements:
 
 *  (Optional) [Caliper](https://github.com/LLNL/Caliper): a performance profiling/analysis library.
 
-*  (Optional) Charm++ (https://github.com/UIUC-PPL/charm) with AMPI+CUDA build.
+*  (Optional) [Charm++](https://github.com/UIUC-PPL/charm) with AMPI+CUDA build.
+
+
 Submodule dependencies:
 
 *  [BLT](https://github.com/LLNL/blt) v0.1: a CMake based build system (required)
